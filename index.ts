@@ -82,6 +82,30 @@ export default class ResourceKeyValueAdapter implements KeyValueAdapter {
       return { [key]: value };
     });
 
-    return keyValuePairs;
+    const keyValuePairsFiltered = keyValuePairs.filter((pair) => {
+      const key = Object.keys(pair)[0];
+      if (collection) {
+        return key.startsWith(`${collection}:`);
+      }
+      return true;     
+    })
+
+    keyValuePairsFiltered.forEach((pair) => {
+      const key = Object.keys(pair)[0];
+      if (collection) {
+        const keyWithoutCollection = key.replace(`${collection}:`, '');
+        pair[keyWithoutCollection] = pair[key];
+        delete pair[key];
+      }
+    })
+
+    const result = keyValuePairsFiltered.filter((pair) => {
+      const key = Object.keys(pair)[0];
+      if (key.startsWith(`${prefix}`)) {
+        return true;
+      }
+      return false;
+    })
+    return result;
   }
 }
