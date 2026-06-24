@@ -84,7 +84,7 @@ export default class ResourceKeyValueAdapter implements KeyValueAdapter {
     const resource = this.getResource();
     const actualPrefix = this.getActualKey(prefix, collection);
     const list = await resource.list(Filters.LIKE(this.options.keyField, `${actualPrefix}%`), limit, 0, Sorts.ASC(this.options.keyField));
-
+    
     const keyValuePairs: Record<string, string>[] = list.map((record) => {
       const key = record[this.options.keyField];
       const value = record[this.options.valueField];
