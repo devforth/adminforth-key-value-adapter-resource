@@ -13,7 +13,7 @@ export default class RAMKeyValueAdapter implements KeyValueAdapter {
 
   protected registerAdminForthIfNeeded() {
     if (!this.adminForth) {
-      this.adminForth = global.adminForth as IAdminForth;
+      this.adminForth = global.adminforth as IAdminForth;
     }
   }
 
@@ -64,9 +64,9 @@ export default class RAMKeyValueAdapter implements KeyValueAdapter {
   async delete(key: string, collection?: string): Promise<void> {
     const resource = this.getResource();
     if (collection) {
-      this.adminForth!.resource(this.options.resourceId).delete(Filters.AND(Filters.EQ(this.options.collectionField, collection), Filters.EQ(this.options.keyField, key)));
+      await resource.delete(Filters.AND(Filters.EQ(this.options.collectionField, collection), Filters.EQ(this.options.keyField, key)));
     } else {
-      this.adminForth!.resource(this.options.resourceId).delete(Filters.EQ(this.options.keyField, key));
+      await resource.delete(Filters.EQ(this.options.keyField, key));
     }
   }
 
