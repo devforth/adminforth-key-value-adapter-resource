@@ -46,31 +46,22 @@ export default class ResourceKeyValueAdapter implements KeyValueAdapter {
       afLogger.error(`ResourceKeyValueAdapter does not support expiresInSeconds yet. Ignoring expiresInSeconds for key: ${key} and collection: ${collection}`);
     }
     const actualKey = this.getActualKey(key, collection);
-    if (collection) {
-      const existing = await resource.get(Filters.AND(Filters.EQ(this.options.collectionField, collection), Filters.EQ(this.options.keyField, actualKey)));
-      if (existing) {
-        await resource.update(Filters.AND(Filters.EQ(this.options.collectionField, collection), Filters.EQ(this.options.keyField, actualKey)), {
-          [this.options.valueField]: value,
-        });
-      } else {
-        await resource.create({
-          [this.options.keyField]: actualKey,
-          [this.options.valueField]: value,
-          [this.options.collectionField]: collection,
-        });
-      }
+    const existing = await resource.get(Filters.EQ(this.options.keyField, actualKey));
+    if (existing) {
+      await resource.update(actualKey, {
+        [this.options.valueField]: value,
+      });
+    } else if (collection) {
+      await resource.create({
+        [this.options.keyField]: actualKey,
+        [this.options.valueField]: value,
+        [this.options.collectionField]: collection,
+      });
     } else {
-      const existing = await resource.get(Filters.EQ(this.options.keyField, actualKey));
-      if (existing) {
-        await resource.update(Filters.EQ(this.options.keyField, actualKey), {
-          [this.options.valueField]: value,
-        });
-      } else {
-        await resource.create({
-          [this.options.keyField]: actualKey,
-          [this.options.valueField]: value,
-        });
-      }
+      await resource.create({
+        [this.options.keyField]: actualKey,
+        [this.options.valueField]: value,
+      });
     }
   }
 
@@ -84,7 +75,7 @@ export default class ResourceKeyValueAdapter implements KeyValueAdapter {
     const resource = this.getResource();
     const actualPrefix = this.getActualKey(prefix, collection);
     const list = await resource.list(Filters.LIKE(this.options.keyField, `${actualPrefix}%`), limit, 0, Sorts.ASC(this.options.keyField));
-    
+
     const keyValuePairs: Record<string, string>[] = list.map((record) => {
       const key = record[this.options.keyField];
       const value = record[this.options.valueField];
