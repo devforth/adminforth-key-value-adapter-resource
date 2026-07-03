@@ -3,4 +3,5 @@ export interface AdapterOptions {
   keyField: string;
   valueField: string;
   collectionField: string;
+  expireField?: string;
 }
