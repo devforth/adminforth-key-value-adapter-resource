@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "DevForth (https://devforth.io)",
   "license": "MIT",
-  "description": "",
+  "description": "AdminForth key-value adapter backed by an AdminForth resource.",
   "devDependencies": {
     "adminforth": "^3.6.0",
     "semantic-release": "^24.2.1",
@@ -50,5 +50,9 @@
         "prerelease": true
       }
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devforth/adminforth-key-value-adapter-resource.git"
   }
 }
