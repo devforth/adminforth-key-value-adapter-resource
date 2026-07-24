@@ -51,6 +51,7 @@
       }
     ]
   },
+  "homepage": "https://adminforth.dev/docs/tutorial/Adapters/key-value-adapters/#resource-based-adapter",
   "repository": {
     "type": "git",
     "url": "https://github.com/devforth/adminforth-key-value-adapter-resource.git"
