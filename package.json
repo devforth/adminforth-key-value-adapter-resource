@@ -24,7 +24,7 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "adminforth": "^3.6.0"
+    "adminforth": "^4.7.3"
   },
   "release": {
     "plugins": [
